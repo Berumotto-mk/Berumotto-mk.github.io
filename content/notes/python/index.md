@@ -9,7 +9,6 @@ tags:
 image:
   caption: 'Embed rich media such as videos and LaTeX math'
 ---
-
 [Hugo Blox Builder](https://hugoblox.com) is designed to give technical content creators a seamless experience. You can focus on the content and the Hugo Blox Builder which this template is built upon handles the rest.
 
 **Embed videos, podcasts, code, LaTeX math, and even test students!**
@@ -32,7 +31,7 @@ Teach your course by sharing videos with your students. Choose from one of the f
 
 **Video file**
 
-Videos may be added to a page by either placing them in your `assets/media/` media library or in your [page's folder](https://gohugo.io/content-management/page-bundles/), and then embedding them with the _video_ shortcode:
+Videos may be added to a page by either placing them in your `assets/media/` media library or in your [page&#39;s folder](https://gohugo.io/content-management/page-bundles/), and then embedding them with the _video_ shortcode:
 
     {{</* video src="my_video.mp4" controls="yes" */>}}
 
@@ -83,7 +82,11 @@ $$
 renders as
 
 {{< math >}}
-$$\gamma_{n} = \frac{ \left | \left (\mathbf x_{n} - \mathbf x_{n-1} \right )^T \left [\nabla F (\mathbf x_{n}) - \nabla F (\mathbf x_{n-1}) \right ] \right |}{\left \|\nabla F(\mathbf{x}_{n}) - \nabla F(\mathbf{x}_{n-1}) \right \|^2}$$
+
+$$
+\gamma_{n} = \frac{ \left | \left (\mathbf x_{n} - \mathbf x_{n-1} \right )^T \left [\nabla F (\mathbf x_{n}) - \nabla F (\mathbf x_{n-1}) \right ] \right |}{\left \|\nabla F(\mathbf{x}_{n}) - \nabla F(\mathbf{x}_{n-1}) \right \|^2}
+$$
+
 {{< /math >}}
 
 Example **inline math** `{{</* math */>}}$\nabla F(\mathbf{x}_{n})${{</* /math */>}}` renders as {{< math >}}$\nabla F(\mathbf{x}_{n})${{< /math >}}.
@@ -112,12 +115,7 @@ $$
 
 Hugo Blox Builder utilises Hugo's Markdown extension for highlighting code syntax. The code theme can be selected in the `config/_default/params.yaml` file.
 
-
-    ```python
-    import pandas as pd
-    data = pd.read_csv("data.csv")
-    data.head()
-    ```
+    ``python     import pandas as pd     data = pd.read_csv("data.csv")     data.head()     ``
 
 renders as
 

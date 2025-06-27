@@ -13,10 +13,10 @@ sections:
   - block: collection
     id: notes
     content:
-      title: Nodes
+      title: Notes
       filters:
         folders:
-          - nodes
+          - notes
     design:
       view: article-grid
       columns: 2
