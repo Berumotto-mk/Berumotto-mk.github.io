@@ -1,0 +1,79 @@
+.note-side-toc {
+  position: fixed;
+  top: 88px;
+  right: 24px;
+  z-index: 20;
+  width: 260px;
+  max-height: calc(100vh - 120px);
+  overflow: auto;
+  padding: 0 0 0 16px;
+  border-left: 1px solid rgba(120, 120, 120, 0.28);
+  color: #5f6368;
+  font-family: "Helvetica Neue", Helvetica, Arial, "Segoe UI", sans-serif;
+  font-size: 13px;
+  line-height: 1.35;
+  background: transparent;
+}
+
+.note-side-toc-title {
+  margin: 0 0 10px;
+  color: #333;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.note-side-toc a {
+  display: block;
+  margin: 1px 0;
+  padding: 4px 8px;
+  border-left: 2px solid transparent;
+  border-radius: 4px;
+  color: #666;
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.note-side-toc a:hover,
+.note-side-toc a:focus {
+  color: #0f766e;
+  background: rgba(15, 118, 110, 0.08);
+  text-decoration: none;
+}
+
+.note-side-toc a.is-active {
+  color: #0f766e;
+  background: rgba(15, 118, 110, 0.12);
+  border-left-color: #0f766e;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.note-side-toc .toc-h2 {
+  padding-left: 10px;
+}
+
+.note-side-toc .toc-h3 {
+  padding-left: 22px;
+}
+
+.note-side-toc .toc-h4,
+.note-side-toc .toc-h5,
+.note-side-toc .toc-h6 {
+  padding-left: 34px;
+}
+
+@media (min-width: 1220px) {
+  body.typora-export {
+    padding-right: 310px;
+  }
+}
+
+@media (max-width: 1219px) {
+  .note-side-toc {
+    display: none;
+  }
+}
