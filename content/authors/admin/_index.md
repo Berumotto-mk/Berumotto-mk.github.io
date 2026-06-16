@@ -33,10 +33,10 @@ profiles:
   - icon: at-symbol
     url: 'mailto:tswcbyy2005@gmail.com'
     label: E-mail Me
-  - icon: brands/x
-    url: https://twitter.com/GetResearchDev
-  - icon: brands/instagram
-    url: https://www.instagram.com/
+#  - icon: brands/x
+#    url: https://twitter.com/GetResearchDev
+#  - icon: brands/instagram
+#    url: https://www.instagram.com/
   - icon: brands/github
     url: https://github.com/Berumotto-mk
   - icon: brands/linkedin
