@@ -2,6 +2,7 @@
 title: 概率与数理统计复习笔记
 summary: 概率论与数理统计课程十章复习笔记
 date: 2026-06-16
+type: docs
 ---
 
 这组笔记按章节整理，页面由 Markdown 导出为 Typora 风格的内嵌式 HTML。
