@@ -9,7 +9,7 @@
 <body>
   <header class="topbar"><a href="/notes/" class="home">berumotto-mk / Notes</a><strong>强化学习笔记</strong><div class="actions"><span id="status" role="status">加载中</span><button id="connect">连接 GitHub</button><button id="save" class="primary" disabled>保存到 GitHub</button></div></header>
   <div class="workspace">
-    <aside class="courses"><label for="search">课程笔记</label><input id="search" type="search" placeholder="搜索各讲标题与正文"><nav id="lessons" aria-label="课程各讲"></nav></aside>
+    <aside class="courses"><label for="search">课程笔记</label><input id="search" type="search" placeholder="搜索课程标题"><nav id="lessons" aria-label="课程各讲"></nav></aside>
     <main>
       <div class="document-bar"><div class="tabs"><button id="read" aria-pressed="true">阅读</button><button id="edit" aria-pressed="false">编辑</button></div><div><button id="import">导入备份</button><button id="export">导出备份</button><input id="import-file" type="file" accept="application/json,.json" hidden></div></div>
       <div id="toolbar" hidden aria-label="编辑工具栏"><select id="block" aria-label="段落样式"><option value="p">正文</option><option value="h2">一级标题</option><option value="h3">二级标题</option><option value="h4">三级标题</option><option value="blockquote">引用</option><option value="pre">代码</option></select><button data-command="bold"><b>加粗</b></button><button data-command="italic"><i>斜体</i></button><button data-command="insertUnorderedList">列表</button><button data-command="insertOrderedList">编号</button><button id="formula">公式</button><button data-command="undo">撤销</button><button data-command="redo">重做</button></div>

@@ -161,10 +161,6 @@ main {
   color:var(--ink);
   text-overflow:ellipsis;
   padding:0}
-#title:not([readonly]) {
-  border-bottom:1px dashed #9cb7bd}
-#title:focus {
-  outline:2px solid #8ebec8}
 .meta {
   display:flex;
   flex-wrap:wrap;
@@ -411,3 +407,8 @@ input[type=search] {
   margin:0;
   white-space:normal;
   overflow-wrap:anywhere}
+@media (min-width:960px) and (max-width:1200px) {
+  .workspace { grid-template-columns:220px minmax(0,1fr) 190px; }
+  .outline { display:block; }
+  .home { display:block; }
+}

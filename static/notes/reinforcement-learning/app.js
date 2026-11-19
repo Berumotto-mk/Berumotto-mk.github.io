@@ -128,7 +128,7 @@ function draw(note) {
 }
 async function github(path, options = {}) {
   const response = await fetch(apiRoot + path, {
-    ...options, headers: { Accept: 'application/vnd.github+json',
+    ...options, cache: 'no-store', headers: { Accept: 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28', ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(options.body ? { 'Content-Type': 'application/json' } : {}) },
   });
@@ -196,12 +196,16 @@ async function save() {
     rememberDraft();
     status(changed ? '此版本已提交，新修改仍保留为草稿' : '已保存到 GitHub，网站正在自动发布');
   } catch (error) { status(error.message); }
-  finally { busy = false; $('save').disabled = !changed; }
+  finally {
+    busy = false; $('save').disabled = !changed;
+    const requestedLesson = selectedLesson();
+    if (requestedLesson && requestedLesson !== current.id) load(requestedLesson);
+  }
 }
 function listLessons(query = '') {
   $('lessons').replaceChildren();
   for (const lesson of lessons) {
-    if (query && !(lesson.title + ' ' + lesson.searchText).toLowerCase().includes(query.toLowerCase())) continue;
+    if (query && !lesson.title.toLowerCase().includes(query.toLowerCase())) continue;
     const link = document.createElement('a'); link.href = '#lesson=' + lesson.id;
     link.dataset.id = lesson.id; link.textContent = lesson.title;
     if (current?.id === lesson.id) link.setAttribute('aria-current', 'page');
