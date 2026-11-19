@@ -6,30 +6,24 @@ type: landing
 design:
   spacing: '5rem'
 
-# Note: `username` refers to the user's folder name in `content/authors/`
-
-# Page sections
 sections:
   - block: resume-experience
     content:
       username: admin
     design:
-      # Hugo date format
       date_format: 'January 2006'
-      # Education or Experience section first?
       is_education_first: false
+  - block: markdown
+    content:
+      title: 'Selected Publication'
+      text: |
+        [DemoFunGrasp: Universal Dexterous Functional Grasping via Demonstration-Editing Reinforcement Learning](/publication/demofungrasp/)
+
+        **CVPR 2026 · Fifth author.** DemoFunGrasp uses demonstration-editing reinforcement learning to teach a dexterous hand to grasp objects according to their intended use. I evaluated image models for predicting grasp keypoints from object images.
+
+        [CVF Open Access](https://openaccess.thecvf.com/content/CVPR2026/html/Mao_DemoFunGrasp_Universal_Dexterous_Functional_Grasping_via_Demonstration-Editing_Reinforcement_Learning_CVPR_2026_paper.html)
   - block: resume-skills
     content:
-      title: Skills & Hobbies
-      username: admin
-    design:
-      show_skill_percentage: false
-  - block: resume-awards
-    content:
-      title: Awards
-      username: admin
-  - block: resume-languages
-    content:
-      title: Languages
+      title: Technical Skills
       username: admin
 ---
