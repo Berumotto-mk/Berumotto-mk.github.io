@@ -111,6 +111,17 @@ class ImportTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Conflicting'):
             source(path)
 
+    def test_failed_rebuild_invalidates_older_staging(self):
+        self.run_build()
+        path = self.raw / ('a' * 32 + '.json')
+        value = read(path)
+        value['blocks'][0]['read']['title'] = [{'t': 'unknown-widget'}]
+        write(path, value)
+        with self.assertRaisesRegex(ValueError, 'Unsupported'):
+            self.run_build()
+        with self.assertRaisesRegex(ValueError, 'No successful'):
+            self.run_apply()
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -203,6 +203,8 @@ def download(config, key):
 
 def build(config):
     repo, work, root = (Path(config[name]) for name in ('repo', 'work', 'source'))
+    # A failed rebuild must not leave an older successful plan eligible for apply.
+    (work / 'build-report.json').unlink(missing_ok=True)
     slug = config['slug']
     stage = work / 'staging'
     destination = stage / 'static/notes' / slug
@@ -298,6 +300,8 @@ def build(config):
 
 def apply(config):
     repo, work = Path(config['repo']).resolve(), Path(config['work'])
+    if not (work / 'build-report.json').is_file():
+        raise ValueError('No successful staged build. Run build before applying.')
     report = read(work / 'build-report.json')
     if report['configHash'] != hashlib.sha256(json.dumps(config, sort_keys=True).encode()).hexdigest():
         raise ValueError('The import plan changed after staging. Run build again.')
