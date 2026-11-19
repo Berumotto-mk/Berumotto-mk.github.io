@@ -61,6 +61,20 @@ education:
       - Computer science coursework includes Introduction to Artificial Intelligence, Machine Learning, Image Processing, and Computer Networks.
 
 work:
+  - position: Robot Learning Research
+    company_name: Zongqing Lu's Research Group, Peking University
+    date_start: 2025-09-01
+    date_end: 2025-12-01
+    summary: |
+      - Explored reinforcement learning for grasping policies and training VLA models on videos of human manipulation.
+      - Contributed to **DemoFunGrasp** (CVPR 2026) by comparing image models for predicting grasp keypoints from object images.
+  - position: Dynamic Object Grasping Research
+    company_name: Peking University Industrial Embodied Intelligence Lab / 一湃智能
+    date_start: 2026-06-20
+    date_end: 2026-07-20
+    summary: |
+      - Trained and evaluated a proposed WAM architecture and several baselines on dynamic simulation datasets, including DOMINO and DOM.
+      - Supervised by **Zhibo Pang (庞智博)**.
   - position: Spatial Intelligence Research Intern
     company_name: Microsoft Research Asia
     date_start: 2026-07-06
@@ -69,20 +83,6 @@ work:
       - Worked on DexUMI and real-time deployment of vision-language-action (VLA) policies in the Spatial Intelligence Group.
       - Deployed RTC and VLASH on a physical 20-degree-of-freedom dexterous hand.
       - Mentor **Yu Deng (邓誉)** and supervisor **Jiaolong Chen (陈蛟龙)**.
-  - position: Dynamic Object Grasping Research
-    company_name: Peking University Industrial Embodied Intelligence Lab / 一湃智能
-    date_start: 2026-06-20
-    date_end: 2026-07-20
-    summary: |
-      - Trained and evaluated a proposed WAM architecture and several baselines on dynamic simulation datasets, including DOMINO and DOM.
-      - Supervised by **Zhibo Pang (庞智博)**.
-  - position: Robot Learning Research
-    company_name: Zongqing Lu's Research Group, Peking University
-    date_start: 2025-09-01
-    date_end: 2025-12-01
-    summary: |
-      - Explored reinforcement learning for grasping policies and training VLA models on videos of human manipulation.
-      - Contributed to **DemoFunGrasp** (CVPR 2026) by comparing image models for predicting grasp keypoints from object images.
 
 skills:
   - name: Robot Learning
