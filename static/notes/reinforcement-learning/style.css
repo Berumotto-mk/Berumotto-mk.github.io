@@ -59,8 +59,9 @@ a {
   color:var(--muted);
   max-width:300px}
 .workspace {
+  --courses-width:268px;
   display:grid;
-  grid-template-columns:268px minmax(0,1fr) 238px;
+  grid-template-columns:var(--courses-width) minmax(0,1fr) 238px;
   max-width:1900px;
   margin:auto}
 .courses,.outline {
@@ -321,11 +322,13 @@ dialog input[type=password],dialog textarea {
   color:var(--muted)}
 @media(min-width:1600px) {
   .workspace {
-  grid-template-columns:310px minmax(0,1fr) 270px}
+  --courses-width:310px;
+  grid-template-columns:var(--courses-width) minmax(0,1fr) 270px}
 }
 @media(max-width:1150px) {
   .workspace {
-  grid-template-columns:230px minmax(0,1fr)}
+  --courses-width:230px;
+  grid-template-columns:var(--courses-width) minmax(0,1fr)}
 .outline {
   display:none}
 .topbar {
@@ -408,7 +411,49 @@ input[type=search] {
   white-space:normal;
   overflow-wrap:anywhere}
 @media (min-width:960px) and (max-width:1200px) {
-  .workspace { grid-template-columns:220px minmax(0,1fr) 190px; }
+  .workspace { --courses-width:220px; grid-template-columns:var(--courses-width) minmax(0,1fr) 190px; }
   .outline { display:block; }
   .home { display:block; }
 }
+.courses-header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.5rem;
+  margin-bottom:1rem;
+}
+.courses-header label { margin:0; }
+#toggle-courses {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  width:34px;
+  height:34px;
+  padding:0;
+  border-color:transparent;
+  background:transparent;
+  color:var(--muted);
+}
+#toggle-courses:hover { background:#eaf3f5; color:var(--accent); }
+#toggle-courses:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.sidebar-icon {
+  position:relative;
+  display:block;
+  width:18px;
+  height:16px;
+  border:1.5px solid currentColor;
+  border-radius:2px;
+}
+.sidebar-icon::before {
+  content:"";
+  position:absolute;
+  left:4px;
+  top:0;
+  bottom:0;
+  border-left:1.5px solid currentColor;
+}
+.workspace.courses-collapsed { --courses-width:48px; }
+.courses-collapsed .courses { padding:1rem .35rem; overflow:hidden; }
+.courses-collapsed .courses-header { margin:0; justify-content:center; }
+.courses-collapsed .courses-header label { display:none; }

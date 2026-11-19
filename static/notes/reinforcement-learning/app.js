@@ -291,6 +291,20 @@ $('import-file').onchange = async event => {
   finally { event.target.value = ''; }
 };
 $('search').oninput = event => listLessons(event.target.value);
+function setCoursesCollapsed(collapsed) {
+  document.querySelector('.workspace').classList.toggle('courses-collapsed', collapsed);
+  $('courses-panel').hidden = collapsed;
+  const label = collapsed ? '展开课程栏' : '收起课程栏';
+  $('toggle-courses').setAttribute('aria-expanded', String(!collapsed));
+  $('toggle-courses').setAttribute('aria-label', label);
+  $('toggle-courses').title = label;
+}
+try { setCoursesCollapsed(localStorage.getItem('rl-courses-collapsed') === 'true'); } catch { setCoursesCollapsed(false); }
+$('toggle-courses').onclick = () => {
+  const collapsed = $('toggle-courses').getAttribute('aria-expanded') === 'true';
+  setCoursesCollapsed(collapsed);
+  try { localStorage.setItem('rl-courses-collapsed', String(collapsed)); } catch {}
+};
 window.addEventListener('hashchange', () => { const id = selectedLesson(); if (id && id !== current?.id) load(id); });
 window.addEventListener('beforeunload', event => { if (changed) { rememberDraft(); event.preventDefault(); event.returnValue = ''; } });
 document.addEventListener('keydown', event => {
