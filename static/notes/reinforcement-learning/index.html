@@ -4,7 +4,7 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <title>强化学习笔记 | berumotto-mk</title>
   <link rel="stylesheet" href="./vendor/katex.min.css"><link rel="stylesheet" href="./style.css">
-  <script defer src="./app.js"></script>
+  <script type="module" src="./app.js"></script>
 </head>
 <body>
   <header class="topbar"><a href="/notes/" class="home">berumotto-mk / Notes</a><strong>强化学习笔记</strong><div class="actions"><span id="status" role="status">加载中</span><button id="connect">连接 GitHub</button><button id="save" class="primary" disabled>保存到 GitHub</button></div></header>
@@ -13,7 +13,7 @@
     <main>
       <div class="document-bar"><div class="tabs"><button id="read" aria-pressed="true">阅读</button><button id="edit" aria-pressed="false">编辑</button></div><div><button id="import">导入备份</button><button id="export">导出备份</button><input id="import-file" type="file" accept="application/json,.json" hidden></div></div>
       <div id="toolbar" hidden aria-label="编辑工具栏"><select id="block" aria-label="段落样式"><option value="p">正文</option><option value="h2">一级标题</option><option value="h3">二级标题</option><option value="h4">三级标题</option><option value="blockquote">引用</option><option value="pre">代码</option></select><button data-command="bold"><b>加粗</b></button><button data-command="italic"><i>斜体</i></button><button data-command="insertUnorderedList">列表</button><button data-command="insertOrderedList">编号</button><button id="formula">公式</button><button data-command="undo">撤销</button><button data-command="redo">重做</button></div>
-      <article id="paper"><input id="title" aria-label="笔记标题" readonly><div class="meta"><span id="date"></span><a id="source" target="_blank" rel="noopener">NoteBrick 原笔记</a></div><div id="body" aria-label="笔记正文" role="textbox" aria-multiline="true" contenteditable="false"></div></article>
+      <article id="paper"><h1 id="title"></h1><div class="meta"><span id="date"></span><a id="source" target="_blank" rel="noopener">NoteBrick 原笔记</a></div><div id="body" aria-label="笔记正文" role="textbox" aria-multiline="true" contenteditable="false"></div></article>
     </main>
     <aside class="outline"><label>本讲目录</label><nav id="toc" aria-label="本讲章节目录"></nav></aside>
   </div>
