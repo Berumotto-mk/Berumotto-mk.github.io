@@ -1,6 +1,7 @@
 import DOMPurify from './vendor/purify.es.mjs';
 import katex from './vendor/katex.mjs';
 import { numberHeadings, clearHeadingNumbers } from './heading-numbering.js?v=3c676cacfe';
+import { setupSidebarResize } from './sidebar-resize.js?v=88fc8919c2';
 
 // A trailing escaped space is significant in LaTeX and must survive sanitizing.
 DOMPurify.addHook('uponSanitizeAttribute', (node, attribute) => {
@@ -300,6 +301,10 @@ export function startNotebook(course) {
     finally { event.target.value = ''; }
   };
   $('search').oninput = event => listLessons(event.target.value);
+  const sidebarResize = setupSidebarResize({
+    workspace: document.querySelector('.workspace'),
+    storageKey: course.collapseKey + ':width',
+  });
   function setCoursesCollapsed(collapsed) {
     document.querySelector('.workspace').classList.toggle('courses-collapsed', collapsed);
     $('courses-panel').hidden = collapsed;
@@ -307,6 +312,7 @@ export function startNotebook(course) {
     $('toggle-courses').setAttribute('aria-expanded', String(!collapsed));
     $('toggle-courses').setAttribute('aria-label', label);
     $('toggle-courses').title = label;
+    sidebarResize.refresh();
   }
   try { setCoursesCollapsed(localStorage.getItem(course.collapseKey) === 'true'); } catch { setCoursesCollapsed(false); }
   $('toggle-courses').onclick = () => {

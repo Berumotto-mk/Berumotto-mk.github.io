@@ -59,7 +59,7 @@ a {
   color:var(--muted);
   max-width:300px}
 .workspace {
-  --courses-width:268px;
+  --courses-width:var(--courses-custom-width,268px);
   display:grid;
   grid-template-columns:var(--courses-width) minmax(0,1fr) 238px;
   max-width:1900px;
@@ -322,12 +322,12 @@ dialog input[type=password],dialog textarea {
   color:var(--muted)}
 @media(min-width:1600px) {
   .workspace {
-  --courses-width:310px;
+  --courses-width:var(--courses-custom-width,310px);
   grid-template-columns:var(--courses-width) minmax(0,1fr) 270px}
 }
 @media(max-width:1150px) {
   .workspace {
-  --courses-width:230px;
+  --courses-width:var(--courses-custom-width,230px);
   grid-template-columns:var(--courses-width) minmax(0,1fr)}
 .outline {
   display:none}
@@ -411,7 +411,7 @@ input[type=search] {
   white-space:normal;
   overflow-wrap:anywhere}
 @media (min-width:960px) and (max-width:1200px) {
-  .workspace { --courses-width:220px; grid-template-columns:var(--courses-width) minmax(0,1fr) 190px; }
+  .workspace { --courses-width:var(--courses-custom-width,220px); grid-template-columns:var(--courses-width) minmax(0,1fr) 190px; }
   .outline { display:block; }
   .home { display:block; }
 }
@@ -462,4 +462,43 @@ input[type=search] {
 #body [data-heading-number]::before {
   content:attr(data-heading-number) " ";
   font-variant-numeric:tabular-nums;
+}
+
+/* The separator overlays the grid boundary without taking space from the document. */
+.workspace > .courses { grid-column:1; grid-row:1; }
+.workspace > main { grid-column:2; grid-row:1; }
+.workspace > .outline { grid-column:3; grid-row:1; }
+.courses-resizer {
+  position:sticky;
+  top:76px;
+  height:calc(100vh - 76px);
+  grid-column:2;
+  grid-row:1;
+  align-self:start;
+  width:10px;
+  margin-left:-5px;
+  z-index:5;
+  cursor:col-resize;
+  touch-action:none;
+  outline:none;
+}
+.courses-resizer::before {
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:4px;
+  width:2px;
+  background:transparent;
+}
+.courses-resizer:hover::before,
+.courses-resizer:focus-visible::before,
+.resizing-courses .courses-resizer::before { background:var(--accent); }
+.courses-resizer[hidden] { display:none; }
+body.resizing-courses, body.resizing-courses * {
+  cursor:col-resize!important;
+  user-select:none!important;
+}
+@media(max-width:720px), print {
+  .courses-resizer { display:none; }
 }
