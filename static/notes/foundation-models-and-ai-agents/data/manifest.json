@@ -1,0 +1,52 @@
+[
+  {
+    "id": "note-04ec7ede29c7482a98628d7de9dddbd2",
+    "title": "09-09 Special Topics on Foundation Models and AI Agents",
+    "blocks": 193
+  },
+  {
+    "id": "note-174f7a40de66483d8f787bf3d039a33d",
+    "title": "09-16 从 Transformer 到语言模型：序列建模的变体与预训练",
+    "blocks": 277
+  },
+  {
+    "id": "note-54aa23e31097422f9bef5d6694899134",
+    "title": "09-23 大语言模型：预训练与后训练",
+    "blocks": 203
+  },
+  {
+    "id": "note-f7b5f747b56e44049d81e8542a4cfd1e",
+    "title": "09-30 大语言模型 · II：后训练",
+    "blocks": 196
+  },
+  {
+    "id": "note-64d6ae73c44f4545b1908117eca4e9ff",
+    "title": "10-14 大语言模型（三）：并行",
+    "blocks": 255
+  },
+  {
+    "id": "note-8136839f29a94291a63963b6664ed7dc",
+    "title": "10-21 大语言模型（III）：并行",
+    "blocks": 258
+  },
+  {
+    "id": "note-6f28967ee5c74c1f90a994f258d4559c",
+    "title": "10-28 大规模视觉模型",
+    "blocks": 286
+  },
+  {
+    "id": "note-4abfecf54b5947c5b1de87d3d14ba9f2",
+    "title": "11-04 大视觉模型与多模态大语言模型",
+    "blocks": 221
+  },
+  {
+    "id": "note-034adfac564d4a49892dd1df8b2f1c1d",
+    "title": "11-11 多模态大语言模型",
+    "blocks": 219
+  },
+  {
+    "id": "note-ede71ad885b34055b2a6f2e5b1921e46",
+    "title": "11-18 第五讲　生成模型",
+    "blocks": 247
+  }
+]

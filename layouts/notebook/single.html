@@ -1,0 +1,1 @@
+{{ readFile (printf "static/notes/%s/index.html" .Params.notebook_slug) | safeHTML }}

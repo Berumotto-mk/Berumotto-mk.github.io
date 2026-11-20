@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="/robot-icon.png">
+  <title>大模型与智能体专题笔记 | berumotto-mk</title>
+  <link rel="stylesheet" href="../_shared/vendor/katex.min.css"><link rel="stylesheet" href="./style.css?v=bbc6cc7457">
+  <script type="module" src="./app.js?v=d52d0dc153"></script>
+</head>
+<body>
+  <header class="topbar"><a href="/notes/" class="home">berumotto-mk / Notes</a><strong>大模型与智能体专题笔记</strong><div class="actions"><span id="status" role="status">加载中</span><button id="connect">连接 GitHub</button><button id="save" class="primary" disabled>保存到 GitHub</button></div></header>
+  <div class="workspace">
+    <aside class="courses">
+      <div class="courses-header">
+        <label for="search">课程笔记</label>
+        <button id="toggle-courses" type="button" aria-label="收起课程栏" title="收起课程栏" aria-expanded="true" aria-controls="courses-panel"><span class="sidebar-icon" aria-hidden="true"></span></button>
+      </div>
+      <div id="courses-panel"><input id="search" type="search" placeholder="搜索课程标题"><nav id="lessons" aria-label="课程各讲"></nav></div>
+    </aside>
+    <main>
+      <div class="document-bar"><div class="tabs"><button id="read" aria-pressed="true">阅读</button><button id="edit" aria-pressed="false">编辑</button></div><div><button id="import">导入备份</button><button id="export">导出备份</button><input id="import-file" type="file" accept="application/json,.json" hidden></div></div>
+      <div id="toolbar" hidden aria-label="编辑工具栏"><select id="block" aria-label="段落样式"><option value="p">正文</option><option value="h2">一级标题</option><option value="h3">二级标题</option><option value="h4">三级标题</option><option value="blockquote">引用</option><option value="pre">代码</option></select><button data-command="bold"><b>加粗</b></button><button data-command="italic"><i>斜体</i></button><button data-command="insertUnorderedList">列表</button><button data-command="insertOrderedList">编号</button><button id="formula">公式</button><button data-command="undo">撤销</button><button data-command="redo">重做</button></div>
+      <article id="paper"><h1 id="title"></h1><div class="meta"><span id="date"></span><a id="source" target="_blank" rel="noopener">NoteBrick 原笔记</a></div><div id="body" aria-label="笔记正文" role="textbox" aria-multiline="true" contenteditable="false"></div></article>
+    </main>
+    <aside class="outline"><label>本讲目录</label><nav id="toc" aria-label="本讲章节目录"></nav></aside>
+  </div>
+  <dialog id="auth"><form method="dialog"><h2>连接 GitHub</h2><p>编辑内容保存到 <strong>Berumotto-mk/Berumotto-mk.github.io</strong> 的 main 分支。提交后网站会自动发布。</p><p>使用仅限此仓库的 fine-grained personal access token，授予 Contents 读写权限。令牌只在当前页面内存中使用，关闭或刷新页面后需要重新连接。</p><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">在 GitHub 创建仓库访问令牌</a><label for="token">GitHub 访问令牌</label><input id="token" type="password" autocomplete="off" spellcheck="false" required><p id="auth-error" role="alert"></p><div class="dialog-actions"><button value="cancel" formnovalidate>取消</button><button id="authorize" type="button" class="primary">连接</button></div></form></dialog>
+  <dialog id="math-dialog"><form method="dialog"><h2>编辑公式</h2><label for="latex">LaTeX</label><textarea id="latex" rows="6" spellcheck="false" required></textarea><label class="check"><input id="display-math" type="checkbox">独立公式</label><div id="math-preview"></div><div class="dialog-actions"><button value="cancel" formnovalidate>取消</button><button value="apply" class="primary">应用</button></div></form></dialog>
+</body></html>
