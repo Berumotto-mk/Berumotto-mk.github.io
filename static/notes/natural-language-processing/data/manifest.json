@@ -1,0 +1,67 @@
+[
+  {
+    "id": "note-5673b733a49d4faa8405b6324fb17883",
+    "title": "09-08 自然语言处理",
+    "blocks": 192
+  },
+  {
+    "id": "note-ca963f6a12d44f0eb51b584660002593",
+    "title": "09-15 自然语言处理：从规则系统到词义学习",
+    "blocks": 216
+  },
+  {
+    "id": "note-5ed051b92e444b408815bafae711f37a",
+    "title": "09-17 PyTorch 入门、工具链与词向量",
+    "blocks": 324
+  },
+  {
+    "id": "note-c189b9b7ee454ec787ffeaaea1344212",
+    "title": "09-22 词义学习与上下文中的词汇级理解",
+    "blocks": 222
+  },
+  {
+    "id": "note-ce938c0d79a349cbacb437ac54bbbdfe",
+    "title": "09-29 句子级：句法分析",
+    "blocks": 174
+  },
+  {
+    "id": "note-5b40c2a72c504c82827bf6d6b0ec5055",
+    "title": "10-13 自然语言理解：递归神经网络句法分析与篇章级理解",
+    "blocks": 179
+  },
+  {
+    "id": "note-2445b0804f5d4a0b92392941d701115d",
+    "title": "10-15 spaCy 与自然语言理解：语言学标记的获取",
+    "blocks": 155
+  },
+  {
+    "id": "note-5c9aacb4effb420ba58f7cb1145e97ce",
+    "title": "10-20 语言与语言学概述",
+    "blocks": 176
+  },
+  {
+    "id": "note-53211fc4b8934b84bc0c534472afe861",
+    "title": "10-27 词法分析",
+    "blocks": 227
+  },
+  {
+    "id": "note-f43a5675eea54dc4bed2abe06d304b44",
+    "title": "10-29 现代汉语的词类划分",
+    "blocks": 256
+  },
+  {
+    "id": "note-281e3824c0f54911883e6265f31634d9",
+    "title": "11-03 现代汉语的句法结构分析",
+    "blocks": 233
+  },
+  {
+    "id": "note-51b47b213128419aa1c9f40bfa62c000",
+    "title": "11-10 现代汉语的语义结构分析",
+    "blocks": 334
+  },
+  {
+    "id": "note-e6f362062cdf46b4ace313f7cea4fec0",
+    "title": "11-12 语用与语篇分析",
+    "blocks": 233
+  }
+]
