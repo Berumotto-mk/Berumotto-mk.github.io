@@ -581,3 +581,36 @@ body.resizing-courses, body.resizing-courses * {
 #body .note-annotation[data-note-size=xlarge] { font-size:1.3em; }
 @media(max-width:720px) { .annotation-bar { top:64px; padding:.45rem; } }
 @media print { .annotation-bar,.annotation-floating,.annotation-palette,.annotation-edit-group { display:none!important; } }
+
+/* Scale only the paper; keep navigation and tools at their normal size. */
+#paper {
+  zoom:var(--note-zoom,1);
+  width:100%;
+  max-width:980px;
+}
+.note-zoom {
+  display:flex;
+  align-items:center;
+  gap:.3rem;
+  margin-left:auto;
+}
+.note-zoom button { min-width:32px; }
+.note-zoom button:nth-child(2) {
+  min-width:64px;
+  font-variant-numeric:tabular-nums;
+}
+.note-zoom-status {
+  position:absolute;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+  clip-path:inset(50%);
+  white-space:nowrap;
+}
+@media(max-width:720px) {
+  #paper { width:calc(100% - 1rem); }
+}
+@media print {
+  #paper { zoom:1; width:auto; }
+  .note-zoom { display:none!important; }
+}

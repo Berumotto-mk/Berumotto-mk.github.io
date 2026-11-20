@@ -29,6 +29,7 @@ export function startNotebook(course) {
   let formulaTarget;
   let insertionRange;
   let annotations;
+  let zoomControls;
 
   function status(message) { $('status').textContent = message; }
   function displayLatex(value) {
@@ -124,6 +125,7 @@ export function startNotebook(course) {
     $('read').setAttribute('aria-pressed', String(!value));
     $('edit').setAttribute('aria-pressed', String(value));
     annotations?.setMode(value);
+    if (zoomControls) (value ? $('toolbar') : document.querySelector('.annotation-bar')).append(zoomControls);
   }
   function draw(note) {
     current = note;
@@ -346,5 +348,41 @@ export function startNotebook(course) {
     restore: draw, onChange: onInput, status,
     canApply: () => Boolean(current) && !busy && !loading,
   });
+  // Keep view preferences separate from note content and saved drafts.
+  zoomControls = document.createElement('div');
+  zoomControls.className = 'note-zoom';
+  zoomControls.setAttribute('role', 'group');
+  zoomControls.setAttribute('aria-label', '笔记缩放');
+  const zoomKey = course.collapseKey + ':zoom';
+  let zoom = 100;
+  function zoomButton(label, text, action) {
+    const button = document.createElement('button');
+    button.type = 'button'; button.title = label;
+    button.setAttribute('aria-label', label); button.textContent = text;
+    button.addEventListener('mousedown', event => event.preventDefault());
+    button.addEventListener('click', action);
+    zoomControls.append(button);
+    return button;
+  }
+  const zoomOut = zoomButton('缩小笔记', '−', () => setZoom(zoom - 10));
+  const zoomReset = zoomButton('恢复 100% 缩放', '100%', () => setZoom(100));
+  const zoomIn = zoomButton('放大笔记', '+', () => setZoom(zoom + 10));
+  const zoomStatus = document.createElement('span');
+  zoomStatus.className = 'note-zoom-status';
+  zoomStatus.setAttribute('role', 'status');
+  zoomControls.append(zoomStatus);
+  function setZoom(value) {
+    zoom = Math.max(50, Math.min(200, value));
+    $('paper').style.setProperty('--note-zoom', zoom / 100);
+    zoomReset.textContent = zoom + '%';
+    zoomStatus.textContent = '笔记缩放 ' + zoom + '%';
+    zoomOut.disabled = zoom === 50;
+    zoomIn.disabled = zoom === 200;
+    try { localStorage.setItem(zoomKey, String(zoom)); } catch {}
+  }
+  let storedZoom;
+  try { storedZoom = Number(localStorage.getItem(zoomKey)); } catch {}
+  setZoom(Number.isFinite(storedZoom) && storedZoom >= 50 && storedZoom <= 200 ? storedZoom : 100);
+  document.querySelector('.annotation-bar').append(zoomControls);
   start();
 }
