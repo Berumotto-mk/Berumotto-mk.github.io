@@ -1,10 +1,12 @@
 import {marked} from './vendor/marked.esm.js';
 import DOMPurify from '/notes/_shared/vendor/purify.es.mjs';
-import {REPO,BRANCH,newDraft,today,parsePost,postPath,validate,serializePost,decode,commitPost} from './core.js?v=1';
+import {REPO,BRANCH,newDraft,today,parsePost,postPath,validate,serializePost,decode,commitPost} from './core.js?v=a067257375';
+import {setupMilkdown} from './milkdown/editor.js?v=ea459a3795';
 
 const $=id=>document.getElementById(id), apiRoot=`https://api.github.com/repos/${REPO}`;
 const fields=['title','slug','date','summary','tags','body'];
 let current=newDraft(), token='', busy=false, timer, previewTimer, unsaved=false, posts=[], objectUrls=[], publishPoll;
+let richEditor, imageUrls=new Map();
 current.slug=`post-${today().replaceAll('-','')}-${current.id.slice(0,6)}`;
 const dbReady=new Promise((resolve,reject)=>{
   const request=indexedDB.open('ma-kai-blog-editor',1);
@@ -24,7 +26,7 @@ async function db(action,value) {
   });
 }
 function status(text,error=false){$('status').textContent=text;$('status').classList.toggle('error',error);}
-function readFields(){for(const name of fields)current[name]=$(name).value;current.updatedAt=Date.now();}
+function readFields(){for(const name of fields)current[name]=name==='body'&&richEditor?richEditor.read():$(name).value;current.updatedAt=Date.now();}
 async function persist(){
   clearTimeout(timer);readFields();
   if(!current.path&&!current.title.trim()&&!current.body.trim()&&!current.summary.trim()&&!current.tags.trim()&&!current.assets.length){unsaved=false;return true;}
@@ -50,6 +52,7 @@ function publicUrl(){
 function showDraft(draft){
   current=structuredClone(draft);unsaved=false;
   for(const name of fields)$(name).value=current[name]||'';
+  for(const url of imageUrls.values())URL.revokeObjectURL(url);imageUrls.clear();
   $('slug').disabled=Boolean(current.path);
   $('editor-heading').textContent=current.path?'编辑文章':'写一篇新文章';
   $('publish').textContent=current.path?'发布更新':'发布文章';
@@ -57,6 +60,8 @@ function showDraft(draft){
   $('view').hidden=!current.path;$('view').href=publicUrl();
   $('deployment').hidden=true;
   status(current.path?'修改会先保存为本地草稿，发布更新后才会公开。':'草稿仅在此浏览器中保存，准备好后点击发布文章。');
+  richEditor?.write(current.body);
+  togglePanel('article-sidebar','toggle-articles',false);
   selectView(false);draftList();
 }
 async function draftList(){
@@ -112,6 +117,9 @@ function setBusy(value){
   busy=value;
   for(const element of document.querySelectorAll('button,input,textarea'))element.disabled=value;
   if(!value)$('slug').disabled=Boolean(current.path);
+  const previewing=$('preview-tab').getAttribute('aria-pressed')==='true';
+  richEditor?.setReadonly(value||previewing);
+  $('image').disabled=value||previewing;$('source-tab').disabled=value||previewing;
 }
 async function loadPost(post){
   if(busy)return;if(!await persist())return;setBusy(true);status('正在载入网站文章…');
@@ -126,9 +134,12 @@ async function loadPost(post){
   }catch(error){status(error.message,true);}finally{setBusy(false);}
 }
 function selectView(preview){
-  $('writing').hidden=preview;$('preview').hidden=!preview;
+  const visual=richEditor&&!richEditor.isSource();
+  $('writing').hidden=preview&&!visual;$('preview').hidden=!preview||visual;
+  richEditor?.setReadonly(preview||busy);
+  $('image').disabled=preview||busy;$('source-tab').disabled=preview||busy;
   $('write-tab').setAttribute('aria-pressed',String(!preview));$('preview-tab').setAttribute('aria-pressed',String(preview));
-  if(preview)renderPreview();
+  if(preview&&!visual)renderPreview();
 }
 function renderPreview(){
   objectUrls.forEach(url=>URL.revokeObjectURL(url));objectUrls=[];
@@ -151,6 +162,7 @@ function renderPreview(){
   $('preview').replaceChildren(heading,content);
 }
 function insert(before,after='',placeholder='文字'){
+  if(richEditor){richEditor.insert(before+placeholder+after);return;}
   const body=$('body'),start=body.selectionStart,end=body.selectionEnd,text=body.value.slice(start,end)||placeholder;
   body.setRangeText(before+text+after,start,end,'select');body.focus();changed();
 }
@@ -161,19 +173,13 @@ $('image').onclick=()=>$('image-file').click();
 $('image-file').onchange=async event=>{
   try{
     for(const file of event.target.files){
-      const ext={'image/png':'png','image/jpeg':'jpg','image/webp':'webp','image/gif':'gif'}[file.type];
-      if(!ext)throw new Error('支持 PNG、JPG、WebP 和 GIF 图片');
-      if(file.size>5*1024*1024)throw new Error('单张图片请控制在 5 MB 以内');
-      if(current.assets.reduce((n,a)=>n+a.data.length,0)+file.size*4/3>28*1024*1024)throw new Error('单篇文章待发布图片请控制在 20 MB 以内');
-      const buffer=await file.arrayBuffer();let binary='';for(const byte of new Uint8Array(buffer))binary+=String.fromCharCode(byte);
-      const name=`image-${crypto.randomUUID()}.${ext}`;
-      current.assets.push({name,type:file.type,data:btoa(binary)});
+      const name=await addImage(file);
       insert(`\n![图片](${name})\n`,'','');
     }
     await persist();status('图片已加入草稿，会与文章一起发布。');
   }catch(error){status(error.message,true);}finally{event.target.value='';}
 };
-for(const name of fields)$(name).addEventListener('input',changed);
+for(const name of fields.filter(name=>name!=='body'))$(name).addEventListener('input',changed);
 $('editor').onsubmit=event=>event.preventDefault();
 $('write-tab').onclick=()=>selectView(false);$('preview-tab').onclick=()=>{readFields();selectView(true);};
 $('new').onclick=async()=>{if(busy)return;if(!await persist())return;const draft=newDraft();draft.slug=`post-${today().replaceAll('-','')}-${draft.id.slice(0,6)}`;showDraft(draft);await persist();$('title').focus();};
@@ -250,10 +256,45 @@ $('import-file').onchange=async event=>{
 };
 document.addEventListener('keydown',event=>{
   if((event.metaKey||event.ctrlKey)&&event.key.toLowerCase()==='s'){event.preventDefault();persist();}
+  if(event.key==='Escape'&&!document.querySelector('dialog[open]')){togglePanel('settings-panel','toggle-settings',false);togglePanel('article-sidebar','toggle-articles',false);}
 });
 window.addEventListener('beforeunload',event=>{if(unsaved||busy){event.preventDefault();event.returnValue='';}});
 async function start(){
+  setBusy(true);
+  try{
+    richEditor=await setupMilkdown({root:$('milkdown'),source:$('body'),sourceButton:$('source-tab'),onChange:changed,onUpload:addImage,resolveImage:resolveImage,notify:text=>status(text)});
+  }catch(error){
+    $('milkdown').hidden=true;$('body').hidden=false;$('body').addEventListener('input',changed);$('source-tab').hidden=true;
+    status('可视化编辑器暂不可用，已切换到 Markdown，草稿功能仍可使用。',true);
+  }
   await refreshPosts();
   try{const drafts=await db('getAll');drafts.sort((a,b)=>b.updatedAt-a.updatedAt);showDraft(drafts[0]||current);}catch{showDraft(current);}
+  setBusy(false);
+}
+function togglePanel(panel,button,open){$(panel).hidden=!open;$(button).setAttribute('aria-expanded',String(open));}
+$('toggle-articles').onclick=()=>togglePanel('article-sidebar','toggle-articles',$('article-sidebar').hidden);
+$('close-articles').onclick=()=>togglePanel('article-sidebar','toggle-articles',false);
+$('toggle-settings').onclick=()=>togglePanel('settings-panel','toggle-settings',$('settings-panel').hidden);
+$('close-settings').onclick=()=>togglePanel('settings-panel','toggle-settings',false);
+function resolveImage(src){
+  const name=src.replace(/^\.\//,'');
+  const asset=current.assets.find(a=>a.name===name);
+  if(asset){
+    if(!imageUrls.has(name)){const bytes=Uint8Array.from(atob(asset.data),c=>c.charCodeAt(0));imageUrls.set(name,URL.createObjectURL(new Blob([bytes],{type:asset.type})));}
+    return imageUrls.get(name);
+  }
+  try{return new URL(src,location.origin+publicUrl()).href;}catch{return src;}
+}
+async function addImage(file){
+  try{
+    const ext={'image/png':'png','image/jpeg':'jpg','image/webp':'webp','image/gif':'gif'}[file.type];
+    if(!ext)throw new Error('支持 PNG、JPG、WebP 和 GIF 图片');
+    if(file.size>5*1024*1024)throw new Error('单张图片请控制在 5 MB 以内');
+    if(current.assets.reduce((n,a)=>n+a.data.length,0)+file.size*4/3>28*1024*1024)throw new Error('单篇文章待发布图片请控制在 20 MB 以内');
+    const buffer=await file.arrayBuffer();let binary='';for(const byte of new Uint8Array(buffer))binary+=String.fromCharCode(byte);
+    const name=`image-${crypto.randomUUID()}.${ext}`;
+    current.assets.push({name,type:file.type,data:btoa(binary)});
+    changed();return name;
+  }catch(error){status(error.message,true);throw error;}
 }
 start();

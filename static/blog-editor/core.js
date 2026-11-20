@@ -33,6 +33,7 @@ export function serializePost(draft) {
   validate(draft);
   const front = {...draft.front,title:draft.title.trim(),date:draft.date,summary:draft.summary.trim(),tags:draft.tags.split(/[,，]/).map(s=>s.trim()).filter(Boolean),draft:false,lastmod:new Date().toISOString()};
   if (!front.authors) front.authors=['admin'];
+  if (/\$[^$\n]+\$|^\s*\$\$/m.test(draft.body)) front.math=true;
   return `---\n${yaml.dump(front,{lineWidth:-1,noRefs:true,sortKeys:false})}---\n\n${draft.body.trim()}\n`;
 }
 export function decode(content) {return new TextDecoder().decode(Uint8Array.from(atob(content.replace(/\s/g,'')),c=>c.charCodeAt(0)));}
