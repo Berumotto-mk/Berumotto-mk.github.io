@@ -66,8 +66,8 @@ a {
   margin:auto}
 .courses,.outline {
   position:sticky;
-  top:76px;
-  height:calc(100vh - 76px);
+  top:var(--note-header-height,76px);
+  height:calc(100vh - var(--note-header-height,76px));
   overflow:auto;
   padding:1.5rem 1rem;
   border-right:1px solid var(--line);
@@ -105,7 +105,7 @@ main {
   min-width:0}
 .document-bar {
   position:sticky;
-  top:76px;
+  top:var(--note-header-height,76px);
   z-index:4;
   display:flex;
   justify-content:space-between;
@@ -126,7 +126,7 @@ main {
   color:var(--accent)}
 #toolbar {
   position:sticky;
-  top:140px;
+  top:var(--note-tools-top,140px);
   z-index:3;
   padding:.7rem 1rem;
   border-bottom:1px solid var(--line);
@@ -470,8 +470,8 @@ input[type=search] {
 .workspace > .outline { grid-column:3; grid-row:1; }
 .courses-resizer {
   position:sticky;
-  top:76px;
-  height:calc(100vh - 76px);
+  top:var(--note-header-height,76px);
+  height:calc(100vh - var(--note-header-height,76px));
   grid-column:2;
   grid-row:1;
   align-self:start;
@@ -505,7 +505,7 @@ body.resizing-courses, body.resizing-courses * {
 
 .annotation-bar {
   position:sticky;
-  top:140px;
+  top:var(--note-tools-top,140px);
   z-index:3;
   display:flex;
   flex-wrap:wrap;
@@ -579,7 +579,7 @@ body.resizing-courses, body.resizing-courses * {
 #body .note-annotation[data-note-size=small] { font-size:.9em; }
 #body .note-annotation[data-note-size=large] { font-size:1.15em; }
 #body .note-annotation[data-note-size=xlarge] { font-size:1.3em; }
-@media(max-width:720px) { .annotation-bar { top:64px; padding:.45rem; } }
+@media(max-width:720px) { .annotation-bar { padding:.45rem; } }
 @media print { .annotation-bar,.annotation-floating,.annotation-palette,.annotation-edit-group { display:none!important; } }
 
 /* Scale only the paper; keep navigation and tools at their normal size. */
@@ -614,3 +614,32 @@ body.resizing-courses, body.resizing-courses * {
   #paper { zoom:1; width:auto; }
   .note-zoom { display:none!important; }
 }
+
+/* Restore remains reachable while every top row gives its space to the note. */
+.restore-notebook-chrome {
+  position:fixed;
+  top:12px;
+  right:16px;
+  z-index:6;
+  box-shadow:0 2px 12px #172b3826;
+  font-size:.875rem;
+}
+.restore-notebook-chrome[hidden] { display:none; }
+.hide-notebook-chrome { white-space:nowrap; }
+.hide-notebook-chrome:focus-visible,.restore-notebook-chrome:focus-visible {
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+}
+.notebook-chrome-collapsed .topbar,
+.notebook-chrome-collapsed .document-bar,
+.notebook-chrome-collapsed #toolbar,
+.notebook-chrome-collapsed .annotation-bar { display:none!important; }
+.notebook-chrome-collapsed #paper { margin-top:.75rem; }
+@media(max-width:720px) {
+  .document-bar { top:var(--note-header-height,76px); }
+  #toolbar { top:var(--note-tools-top,140px); }
+  .topbar .actions { flex-wrap:wrap; }
+  .restore-notebook-chrome { top:8px; right:8px; }
+}
+@media print { .restore-notebook-chrome { display:none!important; } }
+

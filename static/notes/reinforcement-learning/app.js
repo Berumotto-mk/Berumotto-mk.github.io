@@ -1,4 +1,4 @@
-import { startNotebook } from '../_shared/notebook-app.js?v=6e1febc9dc';
+import { startNotebook } from '../_shared/notebook-app.js?v=699be75bbe';
 startNotebook({
   "title": "强化学习笔记",
   "slug": "reinforcement-learning",
@@ -8,3 +8,4 @@ startNotebook({
   "draftKey": "rl-note-draft-v1:",
   "collapseKey": "rl-courses-collapsed"
 });
+

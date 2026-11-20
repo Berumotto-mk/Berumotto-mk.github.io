@@ -384,5 +384,59 @@ export function startNotebook(course) {
   try { storedZoom = Number(localStorage.getItem(zoomKey)); } catch {}
   setZoom(Number.isFinite(storedZoom) && storedZoom >= 50 && storedZoom <= 200 ? storedZoom : 100);
   document.querySelector('.annotation-bar').append(zoomControls);
+  // Collapsing page controls changes only the view, never note content or drafts.
+  const topbar = document.querySelector('.topbar');
+  const documentBar = document.querySelector('.document-bar');
+  const annotationBar = document.querySelector('.annotation-bar');
+  topbar.id = 'notebook-topbar';
+  documentBar.id = 'notebook-document-bar';
+  annotationBar.id = 'notebook-annotation-bar';
+  const chromeKey = course.collapseKey + ':chrome';
+  const chromeButtons = [false, true].map(restore => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = restore ? 'restore-notebook-chrome' : 'hide-notebook-chrome';
+    button.textContent = restore ? '显示顶部' : '隐藏顶部';
+    button.title = restore ? '显示顶部标题和工具栏（Esc）' : '隐藏顶部标题和工具栏';
+    button.setAttribute('aria-controls', 'notebook-topbar notebook-document-bar toolbar notebook-annotation-bar');
+    (restore ? document.body : topbar.querySelector('.actions')).append(button);
+    return button;
+  });
+  function measureChrome() {
+    const headerHeight = topbar.getBoundingClientRect().height;
+    const documentHeight = documentBar.getBoundingClientRect().height;
+    const toolsHeight = $('toolbar').getBoundingClientRect().height + annotationBar.getBoundingClientRect().height;
+    document.documentElement.style.setProperty('--note-header-height', headerHeight + 'px');
+    document.documentElement.style.setProperty('--note-tools-top', (headerHeight + documentHeight) + 'px');
+    document.documentElement.style.setProperty('--note-scroll-margin', (headerHeight + documentHeight + toolsHeight + 24) + 'px');
+  }
+  function setChromeCollapsed(collapsed) {
+    document.body.classList.toggle('notebook-chrome-collapsed', collapsed);
+    chromeButtons[1].hidden = !collapsed;
+    chromeButtons.forEach(button => button.setAttribute('aria-expanded', String(!collapsed)));
+    measureChrome();
+    try { localStorage.setItem(chromeKey, String(collapsed)); } catch {}
+  }
+  chromeButtons[0].onclick = () => {
+    setChromeCollapsed(true);
+    chromeButtons[1].focus({ preventScroll: true });
+  };
+  chromeButtons[1].onclick = () => {
+    setChromeCollapsed(false);
+    chromeButtons[0].focus({ preventScroll: true });
+  };
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && document.body.classList.contains('notebook-chrome-collapsed') && !document.querySelector('dialog[open]')) {
+      chromeButtons[1].click();
+    }
+  });
+  let chromeCollapsed = false;
+  try { chromeCollapsed = localStorage.getItem(chromeKey) === 'true'; } catch {}
+  setChromeCollapsed(chromeCollapsed);
+  if (typeof ResizeObserver !== 'undefined') {
+    const chromeObserver = new ResizeObserver(measureChrome);
+    [topbar, documentBar, $('toolbar'), annotationBar].forEach(element => chromeObserver.observe(element));
+  }
   start();
 }
+

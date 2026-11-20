@@ -1,4 +1,4 @@
-import { startNotebook } from '../_shared/notebook-app.js?v=6e1febc9dc';
+import { startNotebook } from '../_shared/notebook-app.js?v=699be75bbe';
 startNotebook({
   "title": "自动控制原理笔记",
   "slug": "automatic-control",
@@ -8,3 +8,4 @@ startNotebook({
   "draftKey": "automatic-control-note-draft-v1:",
   "collapseKey": "automatic-control-courses-collapsed"
 });
+

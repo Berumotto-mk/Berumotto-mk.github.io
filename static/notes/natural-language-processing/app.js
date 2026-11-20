@@ -1,4 +1,4 @@
-import { startNotebook } from '../_shared/notebook-app.js?v=6e1febc9dc';
+import { startNotebook } from '../_shared/notebook-app.js?v=699be75bbe';
 startNotebook({
   "title": "自然语言处理笔记",
   "slug": "natural-language-processing",
@@ -8,3 +8,4 @@ startNotebook({
   "draftKey": "natural-language-processing-note-draft-v1:",
   "collapseKey": "natural-language-processing-courses-collapsed"
 });
+
