@@ -2,6 +2,7 @@ import DOMPurify from './vendor/purify.es.mjs';
 import katex from './vendor/katex.mjs';
 import { numberHeadings, clearHeadingNumbers } from './heading-numbering.js?v=3c676cacfe';
 import { setupSidebarResize } from './sidebar-resize.js?v=88fc8919c2';
+import { setupAnnotations } from './annotations.js?v=19c3403ef6';
 
 // A trailing escaped space is significant in LaTeX and must survive sanitizing.
 DOMPurify.addHook('uponSanitizeAttribute', (node, attribute) => {
@@ -20,12 +21,14 @@ export function startNotebook(course) {
   let token = '';
   let editing = false;
   let busy = false;
+  let loading = false;
   let generation = 0;
   let changed = false;
   let draftTimer;
   let observer;
   let formulaTarget;
   let insertionRange;
+  let annotations;
 
   function status(message) { $('status').textContent = message; }
   function displayLatex(value) {
@@ -120,6 +123,7 @@ export function startNotebook(course) {
     $('toolbar').hidden = !value;
     $('read').setAttribute('aria-pressed', String(!value));
     $('edit').setAttribute('aria-pressed', String(value));
+    annotations?.setMode(value);
   }
   function draw(note) {
     current = note;
@@ -129,6 +133,7 @@ export function startNotebook(course) {
     $('body').innerHTML = clean(note.html);
     prepareMath($('body'));
     outline();
+    annotations?.reset(note.id);
     for (const link of $('lessons').querySelectorAll('a')) {
       if (link.dataset.id === note.id) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
@@ -163,6 +168,7 @@ export function startNotebook(course) {
     if (busy) return;
     if (current) { clearTimeout(draftTimer); rememberDraft(); }
     const requestGeneration = ++generation;
+    loading = true; annotations?.refresh();
     status('正在加载笔记');
     $('save').disabled = true;
     try {
@@ -180,6 +186,9 @@ export function startNotebook(course) {
       }
       draw(note); rememberDraft();
     } catch (error) { status(error.message); }
+    finally {
+      if (requestGeneration === generation) { loading = false; annotations?.refresh(); }
+    }
   }
   async function save() {
     if (!current || busy) return;
@@ -189,7 +198,7 @@ export function startNotebook(course) {
     const saving = content();
     const base = structuredClone(baseline);
     const id = current.id;
-    busy = true; $('save').disabled = true; status('正在保存到 GitHub');
+    busy = true; annotations?.refresh(); $('save').disabled = true; status('正在保存到 GitHub');
     try {
       const file = await github(`/contents/${notePath(id)}?ref=${branch}`);
       const remote = decodeFile(file);
@@ -207,7 +216,7 @@ export function startNotebook(course) {
       status(changed ? '此版本已提交，新修改仍保留为草稿' : '已保存到 GitHub，网站正在自动发布');
     } catch (error) { status(error.message); }
     finally {
-      busy = false; $('save').disabled = !changed;
+      busy = false; annotations?.refresh(); $('save').disabled = !changed;
       const requestedLesson = selectedLesson();
       if (requestedLesson && requestedLesson !== current.id) load(requestedLesson);
     }
@@ -332,5 +341,10 @@ export function startNotebook(course) {
       lessons = await response.json(); listLessons(); await load(selectedLesson());
     } catch (error) { status(error.message); }
   }
+  annotations = setupAnnotations({
+    root: $('body'), editToolbar: $('toolbar'), snapshot: content,
+    restore: draw, onChange: onInput, status,
+    canApply: () => Boolean(current) && !busy && !loading,
+  });
   start();
 }

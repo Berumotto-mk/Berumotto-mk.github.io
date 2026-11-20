@@ -1,4 +1,4 @@
-import { startNotebook } from '../_shared/notebook-app.js?v=e5c69459d9';
+import { startNotebook } from '../_shared/notebook-app.js?v=97772ff7f0';
 startNotebook({
   "title": "自动控制原理笔记",
   "slug": "automatic-control",
